@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54644955722871028}
   - component: {fileID: 114956539155675690}
   m_Layer: 0
-  m_Name: Spider
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
