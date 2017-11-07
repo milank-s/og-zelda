@@ -46,7 +46,7 @@ public class qBertMovement : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter () {
+	void OnCollisionEnter () {
 		//number to decide change of direction
 		directionChangeNumber = Random.Range (0f, 2.99f);
 
@@ -63,7 +63,7 @@ public class qBertMovement : MonoBehaviour {
 		}
 		if (shootTurnNumber <= likelyToShoot) {
 			//shoot!
-			Instantiate (bullet, transform.position, Quaternion.Euler(0, 0, 0));
+			Instantiate (bullet, transform.position, transform.rotation);
 			likelyToShoot = 0.1f;
 		} else {
 			likelyToShoot += 0.1f;
