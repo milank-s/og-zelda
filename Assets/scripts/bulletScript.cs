@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class bulletScript : MonoBehaviour {
 
+	public int Damage;
+
 	// Use this for initialization
 	void Start () {
-		
+		Damage = 1;
 	}
 	
 	// Update is called once per frame
@@ -14,7 +16,11 @@ public class bulletScript : MonoBehaviour {
 		transform.Translate(Vector3.forward * Time.deltaTime);	
 	}
 
-	void OnTriggerEnter () {
+	void OnTriggerEnter (Collider Col) {
+		if (Col.name == "Player") {
+			Col.GetComponent<Health> ().DamageAmount = Damage;
+			Col.GetComponent<Health> ().Hit = true;
+		}
 		Destroy (gameObject);
 	}
 }

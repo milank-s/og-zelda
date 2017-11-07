@@ -5,7 +5,9 @@ using UnityEngine;
 public class Health : MonoBehaviour {
 
 	public bool Hit=false;
+	public int MaxPoints;
 	public int Points;
+	public int DamageAmount;
 
 	// Use this for initialization
 	void Start () {
