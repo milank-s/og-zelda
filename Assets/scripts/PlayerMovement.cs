@@ -19,7 +19,8 @@ public class PlayerMovement : MonoBehaviour {
 	public enum PlayerStates{
 		Idle,
 		Moving,
-		Attacking,
+		AttackingSword,
+		ReturningSword,
 		Blocking,
 		Dead
 	}
@@ -75,41 +76,20 @@ public class PlayerMovement : MonoBehaviour {
 		} else if(Input.GetKeyDown(KeyCode.O)){
 			//will put sword attack script in here once health script and attack function are coded
 			if (HasSword==true){
-				myCurrentState = PlayerStates.Attacking;
+				myCurrentState = PlayerStates.AttackingSword;
 			}
 		}
 
-		if (myCurrentState==PlayerStates.Attacking) {
-			if (IsSwordIn == true) {
-//				moveDir = SwordOut - SwordIn;
-//				if (moveDir.magnitude > .1f) {
-//					moveDir = Vector3.Normalize (moveDir);
-//					moveDir.z = moveDir.z * .1f;
-//				}
-//				Sword.transform.localPosition += moveDir * Time.deltaTime * 5.0f;
-
-				Sword.GetComponent<Transform> ().localPosition = SwordOut;
-				IsSwordIn = false;
-
-			} else if (IsSwordIn == false) {
-//				moveDir = -SwordOut + SwordIn;
-//				if (moveDir.magnitude > .1f) {
-//					moveDir = Vector3.Normalize (moveDir);
-//					moveDir.z = moveDir.z * .1f;
-//				}
-//				Sword.transform.localPosition += moveDir * Time.deltaTime * 5.0f;
-
-				Sword.GetComponent<Transform> ().localPosition = SwordIn;
-				IsSwordIn = true;
+		if (myCurrentState == PlayerStates.AttackingSword) {
+			Sword.GetComponent<Transform> ().localPosition = SwordOut;
+			if (Sword.GetComponent<Transform> ().localPosition.z >= SwordOut.z) {
+				myCurrentState = PlayerStates.ReturningSword;
 			}
-
-			if (Sword.GetComponent<Transform> ().localPosition.z <= .01 || Sword.GetComponent<Transform> ().localPosition.z >= -.01) {
-				IsAttacking = false;
+		} else if(myCurrentState==PlayerStates.ReturningSword){
+			Sword.GetComponent<Transform> ().localPosition = SwordIn;
+			if (Sword.GetComponent<Transform> ().localPosition.z <= SwordIn.z) {
+				myCurrentState = PlayerStates.Idle;
 			}
 		}
 	}
-
-
-			
-
 }
