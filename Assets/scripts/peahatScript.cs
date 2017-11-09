@@ -8,6 +8,7 @@ public class peahatScript : MonoBehaviour {
 	float howLongToFly;
 	int restCounter = 0;
 	int flyingCounter = 0;
+	int whenToLand = 0;
 	bool readyToTurn = false;
 	bool isFlying = false;
 
@@ -31,16 +32,32 @@ public class peahatScript : MonoBehaviour {
 			if (flyingCounter >= 60) {
 				readyToTurn = true;
 			}
-			if (transform.position.y < 5) {
+			if (transform.position.y < 5 && whenToLand < 300) {
+				Debug.Log ("Rising");
 				transform.position = new Vector3 (transform.position.x, transform.position.y + 0.05f, transform.position.z);
 			}
 
 			transform.Translate ((Vector3.forward)/20f);
+			whenToLand++;
+			Debug.Log (whenToLand);
 
+			if (whenToLand >= 300) {
+				if (transform.position.y > 1.5f) {
+					Debug.Log ("Ready to land.");
+
+					transform.Translate ((Vector3.down) * 0.05f);
+					//transform.position = new Vector3 (transform.position.x, transform.position.y - 0.05f, transform.position.z);
+			
+				}
+				if (transform.position.y <= 1.5f) {
+					isFlying = false;
+					whenToLand = 0;
+				}
+			}
 		}
 
 
-		if (readyToTurn == true && isFlying == true) {
+		if (readyToTurn == true && isFlying == true && whenToLand < 300) {
 			whichDirection = Random.Range (0f, 0.99f);
 			flyingCounter = 0;
 
@@ -71,8 +88,12 @@ public class peahatScript : MonoBehaviour {
 			readyToTurn = false;
 		}
 
+			
+	}
+	void OnCollisionEnter () {
+		readyToTurn = true;
+		isFlying = true;
 
 	}
-
 
 }
