@@ -17,6 +17,10 @@ public class SwordScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider col){
+		//This will cause null reference error if the collided object doesn't have health (a wall for example)
+		//check if GetComponent<Health>() is null before trying to access it
+		//you also don't need to keep track of a Victim variable. Just have a local variable in this function
+		
 		Victim = col.gameObject;
 		Victim.GetComponent<Health> ().Points--;
 	}
