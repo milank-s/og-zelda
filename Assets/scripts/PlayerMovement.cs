@@ -16,6 +16,16 @@ public class PlayerMovement : MonoBehaviour {
 	public Vector3 moveDir;
 	public bool IsSwordIn=true;
 
+	public enum PlayerStates{
+		Idle,
+		Moving,
+		Attacking,
+		Blocking,
+		Dead
+	}
+
+	public PlayerStates myCurrentState=PlayerStates.Idle;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -23,19 +33,31 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey(KeyCode.A)){
-			this.GetComponent<Transform>().eulerAngles=new Vector3 (0,-90,0);
+		if (Input.GetKey (KeyCode.A)) {
+			this.GetComponent<Transform> ().eulerAngles = new Vector3 (0, -90, 0);
 			transform.Translate (0f, 0f, 5f * Time.deltaTime);
-		} else if (Input.GetKey(KeyCode.W)){
-			this.GetComponent<Transform>().eulerAngles=new Vector3 (0,0,0);
+			myCurrentState = PlayerStates.Moving;
+		} else if (Input.GetKey (KeyCode.W)) {
+			this.GetComponent<Transform> ().eulerAngles = new Vector3 (0, 0, 0);
 			transform.Translate (0f, 0f, 5f * Time.deltaTime);
-		} else if (Input.GetKey(KeyCode.S)){
-			this.GetComponent<Transform>().eulerAngles=new Vector3 (0,180,0);
+			myCurrentState = PlayerStates.Moving;
+		} else if (Input.GetKey (KeyCode.S)) {
+			this.GetComponent<Transform> ().eulerAngles = new Vector3 (0, 180, 0);
 			transform.Translate (0f, 0f, 5f * Time.deltaTime);
-		} else if (Input.GetKey(KeyCode.D)){
-			this.GetComponent<Transform>().eulerAngles=new Vector3 (0,90,0);
+			myCurrentState = PlayerStates.Moving;
+		} else if (Input.GetKey (KeyCode.D)) {
+			this.GetComponent<Transform> ().eulerAngles = new Vector3 (0, 90, 0);
 			transform.Translate (0f, 0f, 5f * Time.deltaTime);
-		} 
+			myCurrentState = PlayerStates.Moving;
+		} else if (Input.GetKeyUp (KeyCode.A)) {
+			myCurrentState = PlayerStates.Idle;
+		} else if (Input.GetKeyUp (KeyCode.W)) {
+			myCurrentState = PlayerStates.Idle;
+		} else if (Input.GetKeyUp (KeyCode.S)) {
+			myCurrentState = PlayerStates.Idle;
+		} else if (Input.GetKeyUp (KeyCode.D)) {
+			myCurrentState = PlayerStates.Idle;
+		}
 
 		Ray Direction=new Ray(transform.position, transform.forward);
 
@@ -46,16 +68,18 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.U)) {
 			ShieldUp = true;
+			myCurrentState = PlayerStates.Blocking;
 		} else if (Input.GetKeyUp (KeyCode.U)){
 			ShieldUp = false;
+			myCurrentState = PlayerStates.Idle;
 		} else if(Input.GetKeyDown(KeyCode.O)){
 			//will put sword attack script in here once health script and attack function are coded
 			if (HasSword==true){
-				IsAttacking = true;
+				myCurrentState = PlayerStates.Attacking;
 			}
 		}
 
-		if (IsAttacking= true) {
+		if (myCurrentState==PlayerStates.Attacking) {
 			if (IsSwordIn == true) {
 //				moveDir = SwordOut - SwordIn;
 //				if (moveDir.magnitude > .1f) {
